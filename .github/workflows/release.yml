@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
   build:
     strategy:
@@ -53,36 +56,36 @@ jobs:
           name: ${{ github.ref_name }}
           body: |
             ## Changes in this release
-            
+
             - Remove TUI mode and all related code
             - Fix null pointer issues in connection functions
             - Implement fuzzy search for aliases
             - Add auto-completion for bash, zsh, fish, PowerShell
             - Auto-install shell completion on init
             - Update documentation
-            
+
             ## Features
-            
+
             - CLI mode for SSH connection management
             - Encrypted storage with AES-256-GCM
             - Alias support with fuzzy search
-            - Full CRUD operations
+            - Full CRUD operations (add, list, modify, delete)
             - Shell auto-completion for multiple shells
             - Automatic completion installation
             - Cross-platform support (macOS, Linux, Windows)
-            
+
             ## Installation
-            
+
             ### From Source
             ```bash
             go build -o sshmgr ./cmd
             ```
-            
+
             ### Build Binaries
             Download the binary for your platform from the assets below.
-            
+
             ## Documentation
-            
+
             See README.md for full documentation and usage instructions.
           files: |
             ${{ matrix.output_name }}*
