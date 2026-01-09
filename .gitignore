@@ -1,0 +1,52 @@
+# Binaries for all platforms
+sshmgr
+sshmgr.exe
+
+# Test binary, if any
+*.test
+
+# Output of the go coverage tool
+*.out
+coverage.txt
+coverage.html
+
+# Dependency directories
+vendor/
+
+# Go workspace file
+go.work
+
+# Build artifacts
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+
+# Configuration file (contains sensitive data)
+.ssh_manager_config.yaml
+.ssh_manager_config.yml
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+
+# Linux
+*~
+.*.swp
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Shell completion files (if manually installed)
+_sshmgr
+sshmgr-completion.bash
+sshmgr.ps1
