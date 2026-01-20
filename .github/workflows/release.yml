@@ -3,7 +3,7 @@ name: Build and Release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 permissions:
   contents: write
@@ -34,11 +34,11 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.23'
+          go-version: "1.23"
 
       - name: Build
         run: |
-          go build -o ${{ matrix.output_name }} ./cmd
+          go build -o ${{ matrix.output_name }} .
           echo "Build completed: ${{ matrix.output_name }}"
 
       - name: Upload artifacts

@@ -17,7 +17,7 @@ A modern SSH connection manager written in Go with CLI mode support.
 
 ### Prerequisites
 
-- **Go 1.21+** for building from source
+- **Go 1.23+** for building from source or installing via `go install`
 - **sshpass** for password-based SSH connections
   - macOS: `brew install hudochenkov/sshpass/sshpass`
   - Linux: `sudo apt-get install sshpass`
@@ -30,17 +30,30 @@ Go will automatically download all required dependencies when building:
 - `github.com/sahilm/fuzzy` - Fuzzy search library
 - Standard library for encryption and SSH connections
 
+### Install via go install (Recommended)
+
+```bash
+go install github.com/aki-colt/sshmgr@latest
+```
+
+This will install the binary to `~/go/bin/` (or `$(go env GOPATH)/bin`). Make sure this directory is in your `$PATH`:
+
+```bash
+# Add to your shell profile (~/.bashrc, ~/.zshrc, etc.)
+export PATH=$PATH:$(go env GOPATH)/bin
+```
+
 ### Build from Source
 
 ```bash
 cd ssh-manager-go
-go build -o sshmgr ./cmd
+go build -o sshmgr .
 ```
 
 ### Install System-wide
 
 ```bash
-go build -o sshmgr ./cmd
+go build -o sshmgr .
 sudo mv sshmgr /usr/local/bin/
 ```
 
@@ -232,18 +245,17 @@ hosts:
 
 ```
 ssh-manager-go/
-├── cmd/
-│   └── main.go           # Application entry point
+├── main.go              # Application entry point
 ├── pkg/
 │   ├── cli/
-│   │   ├── commands.go    # CLI command definitions
-│   │   └── helpers.go    # CLI helper functions
+│   │   ├── commands.go   # CLI command definitions
+│   │   └── helpers.go   # CLI helper functions
 │   ├── config/
-│   │   └── config.go     # Configuration management
+│   │   └── config.go    # Configuration management
 │   ├── encryption/
-│   │   └── encryption.go  # AES-256-GCM encryption
+│   │   └── encryption.go # AES-256-GCM encryption
 │   └── ssh/
-│       └── ssh.go        # SSH connection handling
+│       └── ssh.go       # SSH connection handling
 ├── go.mod
 ├── go.sum
 └── README.md
