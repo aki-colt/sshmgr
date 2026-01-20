@@ -23,12 +23,6 @@ It supports CLI mode with encrypted storage and alias management.`,
 				connectByAlias(args[0])
 			}
 		},
-		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-			if len(args) > 0 {
-				return nil, cobra.ShellCompDirectiveNoFileComp
-			}
-			return cli.GetHostSuggestions(cli.GetGlobalConfig()), cobra.ShellCompDirectiveNoFileComp
-		},
 	}
 
 	rootCmd.AddCommand(cli.InitCommand)
@@ -79,7 +73,7 @@ PowerShell:
 `,
 		DisableFlagsInUseLine: true,
 		ValidArgs:             []string{"bash", "zsh", "fish", "powershell"},
-		Args:                  cobra.ExactValidArgs(1),
+		Args:                  cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
 		Run: func(cmd *cobra.Command, args []string) {
 			switch args[0] {
 			case "bash":
@@ -103,12 +97,17 @@ This detects your current shell and installs the completion script to the approp
 			shell := cli.DetectShell()
 			if err := cli.InstallCompletion(cmd, shell); err != nil {
 				fmt.Printf("Error installing completion: %v\n", err)
+				return
+			}
+
+			fmt.Printf("Shell auto-completion installed successfully! (Shell: %s)\n", shell)
+
+			if shell == "zsh" {
+				fmt.Println("Completion configuration added to ~/.zshrc")
+				fmt.Println("Please restart your shell or run 'source ~/.zshrc' to enable completion.")
 			} else {
-				fmt.Printf("Shell auto-completion installed successfully! (Shell: %s)\n", shell)
 				fmt.Println("Please start a new shell or source your shell configuration file to enable completion.")
 				switch shell {
-				case "zsh":
-					fmt.Println("Run: source ~/.zshrc")
 				case "bash":
 					fmt.Println("Run: source ~/.bashrc")
 				case "fish":

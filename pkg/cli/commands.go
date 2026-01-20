@@ -126,7 +126,7 @@ var DeleteCommand = &cobra.Command{
 		if len(args) > 0 {
 			return nil, cobra.ShellCompDirectiveNoFileComp
 		}
-		return GetHostSuggestions(cfg), cobra.ShellCompDirectiveNoFileComp
+		return GetHostSuggestions(cfg, toComplete), cobra.ShellCompDirectiveNoFileComp
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		if _, ok := EnsureAuthenticated(cfg); !ok {
@@ -171,7 +171,7 @@ var ConnectCommand = &cobra.Command{
 		if len(args) > 0 {
 			return nil, cobra.ShellCompDirectiveNoFileComp
 		}
-		return GetHostSuggestions(cfg), cobra.ShellCompDirectiveNoFileComp
+		return GetHostSuggestions(cfg, toComplete), cobra.ShellCompDirectiveNoFileComp
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		alias := args[0]
@@ -209,7 +209,7 @@ var PasswordCommand = &cobra.Command{
 		if len(args) > 0 {
 			return nil, cobra.ShellCompDirectiveNoFileComp
 		}
-		return GetHostSuggestions(cfg), cobra.ShellCompDirectiveNoFileComp
+		return GetHostSuggestions(cfg, toComplete), cobra.ShellCompDirectiveNoFileComp
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		alias := args[0]
@@ -243,7 +243,7 @@ var ModifyCommand = &cobra.Command{
 		if len(args) > 0 {
 			return nil, cobra.ShellCompDirectiveNoFileComp
 		}
-		return GetHostSuggestions(cfg), cobra.ShellCompDirectiveNoFileComp
+		return GetHostSuggestions(cfg, toComplete), cobra.ShellCompDirectiveNoFileComp
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		if _, ok := EnsureAuthenticated(cfg); !ok {

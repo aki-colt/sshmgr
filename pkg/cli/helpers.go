@@ -114,12 +114,22 @@ func findHostByAlias(cfg *config.Config, alias string) (config.Host, error) {
 	return hosts[bestMatch.Index], nil
 }
 
-func GetHostSuggestions(cfg *config.Config) []string {
+func GetHostSuggestions(cfg *config.Config, toComplete ...string) []string {
 	hosts := cfg.ListHosts()
 	aliases := make([]string, len(hosts))
 	for i, h := range hosts {
 		aliases[i] = h.Alias
 	}
+
+	if len(toComplete) > 0 && toComplete[0] != "" {
+		matches := fuzzy.Find(strings.ToLower(toComplete[0]), aliases)
+		filtered := make([]string, len(matches))
+		for i, match := range matches {
+			filtered[i] = aliases[match.Index]
+		}
+		return filtered
+	}
+
 	return aliases
 }
 
@@ -230,6 +240,42 @@ func installZshCompletion(cmd *cobra.Command) error {
 
 	if err := cmd.Root().GenZshCompletionFile(completionFile); err != nil {
 		return fmt.Errorf("failed to generate completion: %w", err)
+	}
+
+	rcFile := homeDir + "/.zshrc"
+
+	content, err := os.ReadFile(rcFile)
+	if err != nil && !os.IsNotExist(err) {
+		return fmt.Errorf("failed to read zshrc: %w", err)
+	}
+
+	rcContent := string(content)
+	fpathLine := "fpath=(~/.zsh/completions $fpath)"
+	autoloadLine := "autoload -U compinit && compinit"
+	compdefLine := "compdef _sshmgr sshmgr"
+
+	linesToAdd := []string{}
+	if !strings.Contains(rcContent, fpathLine) {
+		linesToAdd = append(linesToAdd, fpathLine)
+	}
+	if !strings.Contains(rcContent, autoloadLine) && !strings.Contains(rcContent, "compinit") {
+		linesToAdd = append(linesToAdd, autoloadLine)
+	}
+	if !strings.Contains(rcContent, compdefLine) {
+		linesToAdd = append(linesToAdd, compdefLine)
+	}
+
+	if len(linesToAdd) > 0 {
+		f, err := os.OpenFile(rcFile, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
+		if err != nil {
+			return fmt.Errorf("failed to open zshrc: %w", err)
+		}
+		defer f.Close()
+
+		sourceLines := "\n# sshmgr auto-completion\n" + strings.Join(linesToAdd, "\n") + "\n"
+		if _, err := f.WriteString(sourceLines); err != nil {
+			return fmt.Errorf("failed to write to zshrc: %w", err)
+		}
 	}
 
 	return nil
