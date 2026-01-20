@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/qiubowen/ssh-manager-go/pkg/config"
-	"github.com/qiubowen/ssh-manager-go/pkg/encryption"
-	"github.com/qiubowen/ssh-manager-go/pkg/ssh"
+	"github.com/aki-colt/sshmgr/pkg/config"
+	"github.com/aki-colt/sshmgr/pkg/encryption"
+	"github.com/aki-colt/sshmgr/pkg/ssh"
 	"github.com/spf13/cobra"
 )
 

@@ -1,4 +1,4 @@
-module github.com/qiubowen/ssh-manager-go
+module github.com/aki-colt/sshmgr
 
 go 1.23.0
 

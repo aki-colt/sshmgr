@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/qiubowen/ssh-manager-go/pkg/cli"
+	"github.com/aki-colt/sshmgr/pkg/cli"
 	"github.com/spf13/cobra"
 )
 
