@@ -200,6 +200,40 @@ var ConnectCommand = &cobra.Command{
 	},
 }
 
+// PasswordCommand shows the decrypted password for a host
+var PasswordCommand = &cobra.Command{
+	Use:   "password <alias>",
+	Short: "Show the password for a SSH host by alias",
+	Args:  cobra.ExactArgs(1),
+	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		if len(args) > 0 {
+			return nil, cobra.ShellCompDirectiveNoFileComp
+		}
+		return GetHostSuggestions(cfg), cobra.ShellCompDirectiveNoFileComp
+	},
+	Run: func(cmd *cobra.Command, args []string) {
+		alias := args[0]
+
+		host, err := cfg.GetHostByAlias(alias)
+		if err != nil {
+			fmt.Printf("Error: %v\n", err)
+			return
+		}
+
+		if _, ok := EnsureAuthenticated(cfg); !ok {
+			return
+		}
+
+		password, err := encryptor.Decrypt(host.Password)
+		if err != nil {
+			fmt.Printf("Error decrypting password: %v\n", err)
+			return
+		}
+
+		fmt.Printf("Password for '%s' (%s@%s:%d): %s\n", host.Alias, host.User, host.Host, host.Port, password)
+	},
+}
+
 // ModifyCommand modifies a host
 var ModifyCommand = &cobra.Command{
 	Use:   "modify <alias>",

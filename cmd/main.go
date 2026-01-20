@@ -35,6 +35,7 @@ It supports CLI mode with encrypted storage and alias management.`,
 	rootCmd.AddCommand(cli.AddCommand)
 	rootCmd.AddCommand(cli.ListCommand)
 	rootCmd.AddCommand(cli.ConnectCommand)
+	rootCmd.AddCommand(cli.PasswordCommand)
 	rootCmd.AddCommand(cli.DeleteCommand)
 	rootCmd.AddCommand(cli.ModifyCommand)
 	rootCmd.AddCommand(cli.ResetCommand)
